@@ -6,8 +6,15 @@ SQLite database setup, schema, seeding, and query functions.
 
 import sqlite3
 import os
+import sys
 import pandas as pd
 from datetime import datetime
+
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "fraud_detection.db")
@@ -90,7 +97,7 @@ def init_db():
 
     conn.commit()
     conn.close()
-    print("  ✓ Database schema initialized")
+    print("  [OK] Database schema initialized")
 
 
 def seed_data():
@@ -103,7 +110,7 @@ def seed_data():
     count = cursor.fetchone()[0]
 
     if count > 0:
-        print(f"  ✓ Database already has {count} transactions")
+        print(f"  [OK] Database already has {count} transactions")
         conn.close()
         return
 
@@ -111,7 +118,7 @@ def seed_data():
     df = pd.read_csv(CSV_PATH)
     df.to_sql('transactions', conn, if_exists='append', index=False)
 
-    print(f"  ✓ Seeded {len(df)} transactions into database")
+    print(f"  [OK] Seeded {len(df)} transactions into database")
     conn.commit()
     conn.close()
 

@@ -37,19 +37,42 @@ ENGINEERED_FEATURES = [
 ]
 
 
-def load_model_artifacts():
-    """Load saved model, scaler, and encoders."""
-    if not os.path.exists(MODEL_PATH):
-        raise FileNotFoundError(
-            f"Model not found at {MODEL_PATH}. Run model_training.py first."
-        )
+_CACHED_ARTIFACTS = None
 
-    model = joblib.load(MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
-    encoders = joblib.load(ENCODERS_PATH)
-    feature_names = joblib.load(FEATURE_NAMES_PATH)
 
-    return model, scaler, encoders, feature_names
+def load_model_artifacts(force_reload=False):
+    """Load saved model, scaler, and encoders with auto-training fallback and caching."""
+    global _CACHED_ARTIFACTS
+    if _CACHED_ARTIFACTS is not None and not force_reload:
+        return _CACHED_ARTIFACTS
+
+    files_exist = (
+        os.path.exists(MODEL_PATH) and
+        os.path.exists(SCALER_PATH) and
+        os.path.exists(ENCODERS_PATH) and
+        os.path.exists(FEATURE_NAMES_PATH)
+    )
+
+    if not files_exist:
+        from backend.model_training import main as train_pipeline
+        train_pipeline()
+
+    try:
+        model = joblib.load(MODEL_PATH)
+        scaler = joblib.load(SCALER_PATH)
+        encoders = joblib.load(ENCODERS_PATH)
+        feature_names = joblib.load(FEATURE_NAMES_PATH)
+    except Exception:
+        # Cross-environment pickle version fallback
+        from backend.model_training import main as train_pipeline
+        train_pipeline()
+        model = joblib.load(MODEL_PATH)
+        scaler = joblib.load(SCALER_PATH)
+        encoders = joblib.load(ENCODERS_PATH)
+        feature_names = joblib.load(FEATURE_NAMES_PATH)
+
+    _CACHED_ARTIFACTS = (model, scaler, encoders, feature_names)
+    return _CACHED_ARTIFACTS
 
 
 def engineer_features(data):
@@ -123,17 +146,13 @@ def predict_fraud(transaction_data):
 
     feature_vector = np.array(feature_vector).reshape(1, -1)
 
-    # Scale numerical features
-    scale_cols_idx = [feature_names.index(f) for f in NUMERICAL_FEATURES + ENGINEERED_FEATURES
-                      if f in feature_names]
-    temp_df = pd.DataFrame(feature_vector, columns=feature_names)
     scale_cols = [f for f in NUMERICAL_FEATURES + ENGINEERED_FEATURES if f in feature_names]
+    temp_df = pd.DataFrame(feature_vector, columns=feature_names)
     temp_df[scale_cols] = scaler.transform(temp_df[scale_cols])
-    feature_vector = temp_df.values
 
-    # Predict
-    prediction = int(model.predict(feature_vector)[0])
-    probabilities = model.predict_proba(feature_vector)[0]
+    # Predict with feature names preserved
+    prediction = int(model.predict(temp_df)[0])
+    probabilities = model.predict_proba(temp_df)[0]
     fraud_probability = float(probabilities[1])
 
     # Calculate risk score (0-100)

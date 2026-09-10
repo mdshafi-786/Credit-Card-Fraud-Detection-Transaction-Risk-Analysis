@@ -11,6 +11,12 @@ import os
 import sys
 import json
 import joblib
+
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -66,9 +72,9 @@ def load_data():
     print("STEP 1: Loading Data")
     print("=" * 70)
     df = pd.read_csv(DATA_PATH)
-    print(f"  ✓ Loaded {len(df)} transactions with {len(df.columns)} features")
-    print(f"  ✓ Fraud: {df[TARGET].sum()} ({df[TARGET].mean()*100:.2f}%)")
-    print(f"  ✓ Legitimate: {(df[TARGET]==0).sum()} ({(1-df[TARGET].mean())*100:.2f}%)")
+    print(f"  [OK] Loaded {len(df)} transactions with {len(df.columns)} features")
+    print(f"  [OK] Fraud: {df[TARGET].sum()} ({df[TARGET].mean()*100:.2f}%)")
+    print(f"  [OK] Legitimate: {(df[TARGET]==0).sum()} ({(1-df[TARGET].mean())*100:.2f}%)")
     return df
 
 
@@ -82,27 +88,27 @@ def feature_engineering(df):
     df['is_night_transaction'] = df['transaction_hour'].apply(
         lambda h: 1 if h >= 22 or h <= 5 else 0
     )
-    print("  ✓ Created is_night_transaction")
+    print("  [OK] Created is_night_transaction")
 
     # High amount flag
     df['is_high_amount'] = (df['transaction_amount_inr'] > 10000).astype(int)
-    print("  ✓ Created is_high_amount (> ₹10,000)")
+    print("  [OK] Created is_high_amount (> INR 10,000)")
 
     # Amount deviation from customer average
     df['amount_deviation'] = df['transaction_amount_inr'] / (df['avg_transaction_amount_inr'] + 1)
-    print("  ✓ Created amount_deviation")
+    print("  [OK] Created amount_deviation")
 
     # Velocity score: high transaction count + high amount
     df['velocity_score'] = df['transaction_count_30d'] * df['amount_to_customer_avg_ratio']
-    print("  ✓ Created velocity_score")
+    print("  [OK] Created velocity_score")
 
     # Failed attempt risk
     df['failed_attempt_risk'] = df['failed_attempts_24h'] * df['is_night_transaction']
-    print("  ✓ Created failed_attempt_risk")
+    print("  [OK] Created failed_attempt_risk")
 
     # Account risk (new accounts = higher risk)
     df['account_risk_score'] = 1 / (df['account_age_months'] + 1)
-    print("  ✓ Created account_risk_score")
+    print("  [OK] Created account_risk_score")
 
     # Add engineered features to the numerical list
     engineered_features = [
@@ -110,7 +116,7 @@ def feature_engineering(df):
         'velocity_score', 'failed_attempt_risk', 'account_risk_score'
     ]
 
-    print(f"\n  ✓ Total engineered features: {len(engineered_features)}")
+    print(f"\n  [OK] Total engineered features: {len(engineered_features)}")
     return df, engineered_features
 
 
@@ -126,7 +132,7 @@ def encode_and_scale(df, engineered_features):
         le = LabelEncoder()
         df[col + '_encoded'] = le.fit_transform(df[col].astype(str))
         label_encoders[col] = le
-        print(f"  ✓ Encoded {col} ({len(le.classes_)} classes)")
+        print(f"  [OK] Encoded {col} ({len(le.classes_)} classes)")
 
     # Build feature list
     encoded_cat_features = [col + '_encoded' for col in CATEGORICAL_FEATURES]
@@ -142,7 +148,7 @@ def encode_and_scale(df, engineered_features):
     scaler = StandardScaler()
     scale_cols = NUMERICAL_FEATURES + engineered_features
     X[scale_cols] = scaler.fit_transform(X[scale_cols])
-    print("  ✓ StandardScaler applied to numerical features")
+    print("  [OK] StandardScaler applied to numerical features")
 
     return X, y, label_encoders, scaler, all_features
 
@@ -158,7 +164,7 @@ def handle_imbalance(X_train, y_train):
     X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
 
     print(f"  After SMOTE:  {dict(pd.Series(y_resampled).value_counts())}")
-    print(f"  ✓ Resampled from {len(X_train)} to {len(X_resampled)} samples")
+    print(f"  [OK] Resampled from {len(X_train)} to {len(X_resampled)} samples")
 
     return X_resampled, y_resampled
 
@@ -173,7 +179,7 @@ def train_models(X_train, y_train, X_test, y_test):
     results = {}
 
     # ─── Random Forest ───────────────────────────────────────────────────
-    print("\n  ▸ Training Random Forest...")
+    print("\n  -> Training Random Forest...")
     rf = RandomForestClassifier(
         n_estimators=200,
         max_depth=15,
@@ -205,7 +211,7 @@ def train_models(X_train, y_train, X_test, y_test):
 
     # ─── XGBoost ─────────────────────────────────────────────────────────
     if HAS_XGBOOST:
-        print("\n  ▸ Training XGBoost...")
+        print("\n  -> Training XGBoost...")
         xgb = XGBClassifier(
             n_estimators=200,
             max_depth=8,
@@ -214,8 +220,7 @@ def train_models(X_train, y_train, X_test, y_test):
             colsample_bytree=0.8,
             scale_pos_weight=30,
             random_state=42,
-            eval_metric='logloss',
-            use_label_encoder=False
+            eval_metric='logloss'
         )
         xgb.fit(X_train, y_train)
         xgb_pred = xgb.predict(X_test)
@@ -246,7 +251,7 @@ def train_models(X_train, y_train, X_test, y_test):
     best_model = models[best_name]
     best_metrics = results[best_name]
 
-    print(f"\n  ★ Best Model: {best_name} (F1={best_metrics['f1']:.4f})")
+    print(f"\n  * Best Model: {best_name} (F1={best_metrics['f1']:.4f})")
 
     # Detailed classification report
     if best_name == 'RandomForest':
@@ -300,16 +305,16 @@ def save_artifacts(model, scaler, label_encoders, feature_names, metrics, all_re
     print("=" * 70)
 
     joblib.dump(model, MODEL_PATH)
-    print(f"  ✓ Model saved: {MODEL_PATH}")
+    print(f"  [OK] Model saved: {MODEL_PATH}")
 
     joblib.dump(scaler, SCALER_PATH)
-    print(f"  ✓ Scaler saved: {SCALER_PATH}")
+    print(f"  [OK] Scaler saved: {SCALER_PATH}")
 
     joblib.dump(label_encoders, ENCODERS_PATH)
-    print(f"  ✓ Encoders saved: {ENCODERS_PATH}")
+    print(f"  [OK] Encoders saved: {ENCODERS_PATH}")
 
     joblib.dump(feature_names, FEATURE_NAMES_PATH)
-    print(f"  ✓ Feature names saved: {FEATURE_NAMES_PATH}")
+    print(f"  [OK] Feature names saved: {FEATURE_NAMES_PATH}")
 
     # Save metrics
     metrics_to_save = {
@@ -329,18 +334,18 @@ def save_artifacts(model, scaler, label_encoders, feature_names, metrics, all_re
     metrics_json = json.loads(json.dumps(metrics_to_save, default=convert_numpy))
     with open(METRICS_PATH, 'w') as f:
         json.dump(metrics_json, f, indent=2)
-    print(f"  ✓ Metrics saved: {METRICS_PATH}")
+    print(f"  [OK] Metrics saved: {METRICS_PATH}")
 
     with open(FEATURE_IMPORTANCE_PATH, 'w') as f:
         json.dump(importance_data, f, indent=2)
-    print(f"  ✓ Feature importance saved: {FEATURE_IMPORTANCE_PATH}")
+    print(f"  [OK] Feature importance saved: {FEATURE_IMPORTANCE_PATH}")
 
 
 def main():
     """Run the complete training pipeline."""
-    print("\n" + "█" * 70)
+    print("\n" + "=" * 70)
     print("  CREDIT CARD FRAUD DETECTION — MODEL TRAINING PIPELINE")
-    print("█" * 70)
+    print("=" * 70)
 
     # Step 1: Load data
     df = load_data()
@@ -375,12 +380,12 @@ def main():
     # Step 8: Save everything
     save_artifacts(best_model, scaler, label_encoders, feature_names, best_metrics, all_results, importance_data)
 
-    print("\n" + "█" * 70)
-    print("  ✅ TRAINING COMPLETE!")
+    print("\n" + "=" * 70)
+    print("  [OK] TRAINING COMPLETE!")
     print(f"  Best Model: {best_metrics['model_name']}")
     print(f"  F1-Score: {best_metrics['f1']:.4f}")
     print(f"  AUC-ROC: {best_metrics['auc_roc']:.4f}")
-    print("█" * 70 + "\n")
+    print("=" * 70 + "\n")
 
 
 if __name__ == "__main__":

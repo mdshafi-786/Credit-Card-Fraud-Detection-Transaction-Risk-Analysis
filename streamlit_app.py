@@ -366,14 +366,22 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ─── Initialize Database ────────────────────────────────────────────────────
+# ─── Initialize System ───────────────────────────────────────────────────────
 @st.cache_resource
-def initialize_database():
+def initialize_system():
     init_db()
     seed_data()
+    model_path = os.path.join(ROOT_DIR, "backend", "ml", "fraud_model.pkl")
+    metrics_path = os.path.join(ROOT_DIR, "backend", "ml", "model_metrics.json")
+    if not (os.path.exists(model_path) and os.path.exists(metrics_path)):
+        try:
+            from backend.model_training import main as train_pipeline
+            train_pipeline()
+        except Exception as e:
+            print(f"Auto-training on startup: {e}")
     return True
 
-initialize_database()
+initialize_system()
 
 
 PLOT_LAYOUT = dict(
@@ -801,12 +809,16 @@ elif page == "🔍 Predict Transaction":
     </div>
     """, unsafe_allow_html=True)
 
-    # Check if model exists
+    # Ensure model exists
     model_path = os.path.join(ROOT_DIR, "backend", "ml", "fraud_model.pkl")
     if not os.path.exists(model_path):
-        st.error("⚠️ Model not found! Please run `model_training.py` first to train the model.")
-        st.code("python backend/model_training.py", language="bash")
-        st.stop()
+        with st.spinner("🔄 Initializing ML model (one-time setup)..."):
+            try:
+                from backend.model_training import main as train_pipeline
+                train_pipeline()
+            except Exception as e:
+                st.error(f"⚠️ Unable to load model: {e}")
+                st.stop()
 
     col1, col2 = st.columns(2)
 
@@ -1162,10 +1174,14 @@ elif page == "🤖 Model Performance":
     metrics_path = os.path.join(ROOT_DIR, "backend", "ml", "model_metrics.json")
     importance_path = os.path.join(ROOT_DIR, "backend", "ml", "feature_importance.json")
 
-    if not os.path.exists(metrics_path):
-        st.error("⚠️ Model metrics not found. Train the model first.")
-        st.code("python backend/model_training.py", language="bash")
-        st.stop()
+    if not os.path.exists(metrics_path) or not os.path.exists(importance_path):
+        with st.spinner("🔄 Computing model evaluation metrics (one-time setup)..."):
+            try:
+                from backend.model_training import main as train_pipeline
+                train_pipeline()
+            except Exception as e:
+                st.error(f"⚠️ Model metrics not available: {e}")
+                st.stop()
 
     with open(metrics_path, 'r') as f:
         metrics = json.load(f)
