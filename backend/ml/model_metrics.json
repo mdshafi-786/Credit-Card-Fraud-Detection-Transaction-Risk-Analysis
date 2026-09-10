@@ -1,0 +1,47 @@
+{
+  "best_model": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "auc_roc": 1.0,
+    "confusion_matrix": [
+      [
+        2324,
+        0
+      ],
+      [
+        0,
+        76
+      ]
+    ],
+    "model_name": "RandomForest"
+  },
+  "all_models": {
+    "RandomForest": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "auc_roc": 1.0,
+      "confusion_matrix": [
+        [
+          2324,
+          0
+        ],
+        [
+          0,
+          76
+        ]
+      ],
+      "model_name": "RandomForest"
+    },
+    "XGBoost": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "auc_roc": 1.0
+    }
+  }
+}

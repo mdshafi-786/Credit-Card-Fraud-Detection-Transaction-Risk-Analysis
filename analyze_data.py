@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
+import os
 
 # Load the dataset
-df = pd.read_csv(r"c:\Users\lenovo\Downloads\Credit card fraud detection & Transaction Risk Analysis\transactions.csv")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+df = pd.read_csv(os.path.join(BASE_DIR, "transactions.csv"))
 
 print("=" * 80)
 print("DATASET OVERVIEW")

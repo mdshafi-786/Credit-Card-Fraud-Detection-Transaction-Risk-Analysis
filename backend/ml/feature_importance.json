@@ -1,0 +1,62 @@
+[
+  {
+    "feature": "distance_from_home_km",
+    "importance": 0.2670045812154474
+  },
+  {
+    "feature": "failed_attempt_risk",
+    "importance": 0.14323718702773486
+  },
+  {
+    "feature": "is_night_transaction",
+    "importance": 0.12181725214353245
+  },
+  {
+    "feature": "account_age_months",
+    "importance": 0.10769149620538743
+  },
+  {
+    "feature": "account_risk_score",
+    "importance": 0.10199095595087786
+  },
+  {
+    "feature": "amount_deviation",
+    "importance": 0.06722100531567418
+  },
+  {
+    "feature": "amount_to_customer_avg_ratio",
+    "importance": 0.059497584006193815
+  },
+  {
+    "feature": "velocity_score",
+    "importance": 0.042612984596828614
+  },
+  {
+    "feature": "failed_attempts_24h",
+    "importance": 0.029616935698671427
+  },
+  {
+    "feature": "transaction_amount_inr",
+    "importance": 0.023262904603597256
+  },
+  {
+    "feature": "transaction_hour",
+    "importance": 0.014449364482360111
+  },
+  {
+    "feature": "channel_encoded",
+    "importance": 0.014094539143468723
+  },
+  {
+    "feature": "international_transaction",
+    "importance": 0.0020766039825354035
+  },
+  {
+    "feature": "is_high_amount",
+    "importance": 0.00146352063420912
+  },
+  {
+    "feature": "previous_fraud_count",
+    "importance": 0.0006752258458776314
+  }
+]
