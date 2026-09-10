@@ -195,16 +195,11 @@ The best model is selected by **F1-Score**. Reported metrics include:
 4. **Launch the Streamlit dashboard**:
 
    ```bash
-   streamlit run streamlit_app.py
+   https://credit-card-fraud-detection-transaction-risk-analysis.streamlit.app/
    ```
 
    The dashboard auto-initializes the SQLite database and seeds it from the CSV on first launch.
 
-### (Optional) Run the Flask API
-
-```bash
-python backend/app.py
-```
 
 The API server starts on `http://localhost:5000`.
 
@@ -212,11 +207,7 @@ The API server starts on `http://localhost:5000`.
 
 ## 💡 Usage
 
-### Streamlit Dashboard
 
-```bash
-streamlit run streamlit_app.py
-```
 
 Navigate between pages using the **sidebar** or the **top segmented navigation bar**.
 
