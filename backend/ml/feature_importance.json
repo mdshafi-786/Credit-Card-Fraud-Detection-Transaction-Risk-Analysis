@@ -58,5 +58,53 @@
   {
     "feature": "previous_fraud_count",
     "importance": 0.0006752258458776314
+  },
+  {
+    "feature": "avg_transaction_amount_inr",
+    "importance": 0.0004534421032987991
+  },
+  {
+    "feature": "transaction_city_encoded",
+    "importance": 0.0004410628066362045
+  },
+  {
+    "feature": "customer_gender_encoded",
+    "importance": 0.00036153387573403134
+  },
+  {
+    "feature": "device_type_encoded",
+    "importance": 0.0003253217177819214
+  },
+  {
+    "feature": "transaction_state_encoded",
+    "importance": 0.0003189179848300537
+  },
+  {
+    "feature": "day_of_week_encoded",
+    "importance": 0.0003059726076438435
+  },
+  {
+    "feature": "transaction_count_30d",
+    "importance": 0.00026420777318113064
+  },
+  {
+    "feature": "customer_tenure_months",
+    "importance": 0.00022453529817098345
+  },
+  {
+    "feature": "customer_income_monthly_inr",
+    "importance": 0.00019263996388659926
+  },
+  {
+    "feature": "customer_age",
+    "importance": 0.00018586911015166109
+  },
+  {
+    "feature": "merchant_category_encoded",
+    "importance": 0.00013027423926606266
+  },
+  {
+    "feature": "card_type_encoded",
+    "importance": 8.408166702270023e-05
   }
 ]

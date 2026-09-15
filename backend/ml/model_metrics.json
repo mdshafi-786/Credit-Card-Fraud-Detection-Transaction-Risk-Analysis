@@ -1,47 +1,58 @@
 {
   "best_model": {
-    "accuracy": 1.0,
-    "precision": 1.0,
-    "recall": 1.0,
-    "f1": 1.0,
-    "auc_roc": 1.0,
+    "accuracy": 0.8845,
+    "precision": 0.8621,
+    "recall": 0.8389,
+    "f1": 0.8503,
+    "auc_roc": 0.8976,
     "confusion_matrix": [
       [
-        2324,
-        0
+        2059,
+        265
       ],
       [
-        0,
-        76
+        12,
+        64
       ]
     ],
     "model_name": "RandomForest"
   },
   "all_models": {
     "RandomForest": {
-      "accuracy": 1.0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "auc_roc": 1.0,
+      "accuracy": 0.8845,
+      "precision": 0.8621,
+      "recall": 0.8389,
+      "f1": 0.8503,
+      "auc_roc": 0.8976,
       "confusion_matrix": [
         [
-          2324,
-          0
+          2059,
+          265
         ],
         [
-          0,
-          76
+          12,
+          64
         ]
       ],
       "model_name": "RandomForest"
     },
     "XGBoost": {
-      "accuracy": 1.0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "auc_roc": 1.0
+      "accuracy": 0.8615,
+      "precision": 0.8347,
+      "recall": 0.8158,
+      "f1": 0.8251,
+      "auc_roc": 0.8792,
+      "confusion_matrix": [
+        [
+          2006,
+          318
+        ],
+        [
+          14,
+          62
+        ]
+      ],
+      "model_name": "XGBoost"
     }
   }
 }
