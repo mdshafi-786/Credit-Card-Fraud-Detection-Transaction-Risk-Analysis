@@ -1,0 +1,110 @@
+[
+  {
+    "feature": "distance_from_home_km",
+    "importance": 0.2670045812154474
+  },
+  {
+    "feature": "failed_attempt_risk",
+    "importance": 0.14323718702773486
+  },
+  {
+    "feature": "is_night_transaction",
+    "importance": 0.12181725214353245
+  },
+  {
+    "feature": "account_age_months",
+    "importance": 0.10769149620538743
+  },
+  {
+    "feature": "account_risk_score",
+    "importance": 0.10199095595087786
+  },
+  {
+    "feature": "amount_deviation",
+    "importance": 0.06722100531567418
+  },
+  {
+    "feature": "amount_to_customer_avg_ratio",
+    "importance": 0.059497584006193815
+  },
+  {
+    "feature": "velocity_score",
+    "importance": 0.042612984596828614
+  },
+  {
+    "feature": "failed_attempts_24h",
+    "importance": 0.029616935698671427
+  },
+  {
+    "feature": "transaction_amount_inr",
+    "importance": 0.023262904603597256
+  },
+  {
+    "feature": "transaction_hour",
+    "importance": 0.014449364482360111
+  },
+  {
+    "feature": "channel_encoded",
+    "importance": 0.014094539143468723
+  },
+  {
+    "feature": "international_transaction",
+    "importance": 0.0020766039825354035
+  },
+  {
+    "feature": "is_high_amount",
+    "importance": 0.00146352063420912
+  },
+  {
+    "feature": "previous_fraud_count",
+    "importance": 0.0006752258458776314
+  },
+  {
+    "feature": "avg_transaction_amount_inr",
+    "importance": 0.0004534421032987991
+  },
+  {
+    "feature": "transaction_city_encoded",
+    "importance": 0.0004410628066362045
+  },
+  {
+    "feature": "customer_gender_encoded",
+    "importance": 0.00036153387573403134
+  },
+  {
+    "feature": "device_type_encoded",
+    "importance": 0.0003253217177819214
+  },
+  {
+    "feature": "transaction_state_encoded",
+    "importance": 0.0003189179848300537
+  },
+  {
+    "feature": "day_of_week_encoded",
+    "importance": 0.0003059726076438435
+  },
+  {
+    "feature": "transaction_count_30d",
+    "importance": 0.00026420777318113064
+  },
+  {
+    "feature": "customer_tenure_months",
+    "importance": 0.00022453529817098345
+  },
+  {
+    "feature": "customer_income_monthly_inr",
+    "importance": 0.00019263996388659926
+  },
+  {
+    "feature": "customer_age",
+    "importance": 0.00018586911015166109
+  },
+  {
+    "feature": "merchant_category_encoded",
+    "importance": 0.00013027423926606266
+  },
+  {
+    "feature": "card_type_encoded",
+    "importance": 8.408166702270023e-05
+  }
+]

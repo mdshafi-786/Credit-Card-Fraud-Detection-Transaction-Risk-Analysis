@@ -1,0 +1,64 @@
+# ═══════════════════════════════════════════════════════════════
+# .gitignore — Credit Card Fraud Detection & Risk Analysis
+# ═══════════════════════════════════════════════════════════════
+
+# ─── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+*.manifest
+*.spec
+
+# ─── Virtual Environments ───────────────────────────────────
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# ─── IDE & Editors ──────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ─── OS Files ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# ─── Jupyter Notebooks ─────────────────────────────────────
+.ipynb_checkpoints/
+
+# ─── Database (auto-generated, re-seeded on launch) ────────
+fraud_detection.db
+
+# ─── Streamlit ──────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ─── Environment Variables ──────────────────────────────────
+.env
+.env.local
+.env.production
+
+# ─── Logs ───────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Distribution / Packaging ──────────────────────────────
+*.tar.gz
+*.whl
+
+# ─── Snowflake (if applicable) ─────────────────────────────
+environment.yml
