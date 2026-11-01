@@ -1,0 +1,460 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NEUMORPHISM DESIGN SYSTEM (SOFT UI)
+   Base: #181b24 | Raised: #1e2230 | Sunken: #141720
+   Dark Drop Shadow: #0e1017 | Light Highlight: #292e40
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Global Neumorphic Canvas */
+.stApp,
+[data-testid="stAppViewContainer"],
+[data-testid="stHeader"],
+section.main,
+.block-container {
+    background-color: #181b24 !important;
+    color: #f1f5f9 !important;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif !important;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff !important;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif !important;
+    letter-spacing: -0.3px;
+}
+
+p, span, div, label {
+    color: #cbd5e1;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif !important;
+}
+
+/* Hide default streamlit branding */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+/* Sidebar collapse toggle button */
+[data-testid="stSidebarCollapsedControl"],
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    color: #ffffff !important;
+    background: #1e2230 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+    margin: 12px !important;
+    box-shadow: 4px 4px 10px #0e1017, -4px -4px 10px #292e40 !important;
+}
+[data-testid="stSidebarCollapsedControl"] svg,
+[data-testid="collapsedControl"] svg {
+    fill: #818cf8 !important;
+}
+
+/* ─── SIDEBAR NEUMORPHISM ───────────────────────────────────────────────── */
+[data-testid="stSidebar"] {
+    background: #151821 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.03) !important;
+    box-shadow: 6px 0 18px #0e1017 !important;
+}
+
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] div,
+[data-testid="stSidebar"] label {
+    color: #f1f5f9 !important;
+}
+
+/* Sidebar Navigation Radios */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
+    gap: 10px !important;
+}
+
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label {
+    background: #1a1d29 !important;
+    border: 1px solid rgba(255, 255, 255, 0.035) !important;
+    border-radius: 14px !important;
+    padding: 12px 18px !important;
+    margin-bottom: 6px !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    box-shadow: 4px 4px 10px #0e1017, -4px -4px 10px #222736 !important;
+    cursor: pointer !important;
+}
+
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:hover {
+    background: #1e2230 !important;
+    transform: translateX(4px) !important;
+    box-shadow: 6px 6px 14px #0b0c12, -6px -6px 14px #282e3f !important;
+}
+
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label p,
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label span {
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}
+
+/* Active selection - Sunken Inset State with Vibrant Accent */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:has(input:checked) {
+    background: #13151f !important;
+    border-left: 4px solid #6366f1 !important;
+    border-top: 1px solid rgba(99, 102, 241, 0.15) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.02) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02) !important;
+    box-shadow: inset 4px 4px 8px #0c0e14, inset -4px -4px 8px #202434 !important;
+}
+
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:has(input:checked) p,
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:has(input:checked) span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* ─── NEUMORPHIC MAIN HEADER ─────────────────────────────────────────────── */
+.main-header {
+    background: #1e2230 !important;
+    padding: 1.8rem 2.2rem !important;
+    border-radius: 24px !important;
+    margin-bottom: 1.8rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    box-shadow: 10px 10px 22px #0e1017, -10px -10px 22px #292e40 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.main-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.6), transparent);
+}
+
+.main-header h1 {
+    font-size: 1.85rem !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #818cf8 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.main-header p {
+    color: #94a3b8 !important;
+    font-size: 0.95rem !important;
+    margin: 0.4rem 0 0 0 !important;
+}
+
+/* ─── NEUMORPHIC KPI STAT CARDS ──────────────────────────────────────────── */
+.kpi-card {
+    background: #1e2230 !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-radius: 22px !important;
+    padding: 1.5rem 1.2rem !important;
+    text-align: center !important;
+    box-shadow: 8px 8px 18px #0e1017, -8px -8px 18px #292e40 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 12px 12px 26px #0a0c12, -12px -12px 26px #2d3448 !important;
+}
+
+.kpi-icon {
+    width: 52px !important;
+    height: 52px !important;
+    line-height: 52px !important;
+    border-radius: 50% !important;
+    background: #151822 !important;
+    box-shadow: inset 3px 3px 6px #0e1017, inset -3px -3px 6px #242938 !important;
+    font-size: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto 0.7rem auto !important;
+}
+
+.kpi-value {
+    font-size: 1.9rem !important;
+    font-weight: 800 !important;
+    margin: 0.3rem 0 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.kpi-label {
+    color: #94a3b8 !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-weight: 700 !important;
+}
+
+.kpi-blue .kpi-value { color: #818cf8 !important; text-shadow: 0 0 20px rgba(129, 140, 248, 0.35); }
+.kpi-red .kpi-value { color: #f43f5e !important; text-shadow: 0 0 20px rgba(244, 63, 94, 0.35); }
+.kpi-green .kpi-value { color: #10b981 !important; text-shadow: 0 0 20px rgba(16, 185, 129, 0.35); }
+.kpi-orange .kpi-value { color: #f59e0b !important; text-shadow: 0 0 20px rgba(245, 158, 11, 0.35); }
+.kpi-purple .kpi-value { color: #c084fc !important; text-shadow: 0 0 20px rgba(192, 132, 252, 0.35); }
+
+/* ─── SECTION HEADERS ────────────────────────────────────────────────────── */
+.section-header {
+    color: #ffffff !important;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    margin: 1.8rem 0 1rem 0 !important;
+    padding: 0.6rem 1.2rem !important;
+    background: #181b24 !important;
+    border-radius: 12px !important;
+    display: inline-block !important;
+    box-shadow: 4px 4px 10px #0e1017, -4px -4px 10px #242938 !important;
+    border: 1px solid rgba(255, 255, 255, 0.035) !important;
+}
+
+/* ─── NEUMORPHIC PLOTLY CHARTS ───────────────────────────────────────────── */
+div[data-testid="stPlotlyChart"] {
+    background: #1e2230 !important;
+    border-radius: 22px !important;
+    padding: 1.2rem !important;
+    box-shadow: 8px 8px 18px #0e1017, -8px -8px 18px #292e40 !important;
+    border: 1px solid rgba(255, 255, 255, 0.035) !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* ─── NEUMORPHIC INPUTS & SELECTBOXES ────────────────────────────────────── */
+label[data-testid="stWidgetLabel"] p,
+label[data-testid="stWidgetLabel"] span {
+    color: #cbd5e1 !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 0.3rem !important;
+}
+
+div[data-baseweb="select"] > div,
+div[data-baseweb="input"] > div,
+div[data-baseweb="input"] input,
+div[data-baseweb="base-input"] {
+    background-color: #141720 !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    box-shadow: inset 3px 3px 7px #0e1017, inset -3px -3px 7px #242938 !important;
+    transition: all 0.2s ease !important;
+}
+
+div[data-baseweb="select"] > div:focus-within,
+div[data-baseweb="input"] > div:focus-within {
+    box-shadow: inset 3px 3px 7px #0e1017, inset -3px -3px 7px #242938, 0 0 10px rgba(99, 102, 241, 0.35) !important;
+    border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+div[data-baseweb="select"] span {
+    color: #ffffff !important;
+}
+
+div[data-baseweb="popover"],
+div[data-baseweb="menu"] {
+    background-color: #1e2230 !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 10px 10px 24px #0e1017, -10px -10px 24px #292e40 !important;
+    border-radius: 16px !important;
+}
+
+ul[role="listbox"] li {
+    color: #e2e8f0 !important;
+    border-radius: 8px !important;
+}
+
+ul[role="listbox"] li:hover {
+    background: #252a3a !important;
+    color: #818cf8 !important;
+}
+
+/* ─── NEUMORPHIC BUTTONS ─────────────────────────────────────────────────── */
+.stButton > button,
+button[kind="secondary"] {
+    background: linear-gradient(145deg, #202434, #1a1e2b) !important;
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 5px 5px 12px #0e1017, -5px -5px 12px #282d3e !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    padding: 0.65rem 1.6rem !important;
+    letter-spacing: 0.3px !important;
+}
+
+.stButton > button:hover,
+button[kind="secondary"]:hover {
+    background: #222738 !important;
+    color: #818cf8 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 7px 7px 16px #0b0c12, -7px -7px 16px #2c3246 !important;
+}
+
+.stButton > button:active,
+button[kind="secondary"]:active {
+    transform: translateY(1px) scale(0.98) !important;
+    box-shadow: inset 3px 3px 6px #0e1017, inset -3px -3px 6px #282d3e !important;
+}
+
+/* Primary Action Buttons (Predict, Submit) */
+button[kind="primary"] {
+    background: linear-gradient(145deg, #5356e6, #4338ca) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 6px 6px 14px #0e1017, -6px -6px 14px #262b3c, 0 0 20px rgba(99, 102, 241, 0.4) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+button[kind="primary"]:hover {
+    background: linear-gradient(145deg, #5f63f2, #4f46e5) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 8px 8px 18px #090b10, -8px -8px 18px #2a3044, 0 0 25px rgba(99, 102, 241, 0.55) !important;
+}
+
+/* ─── NEUMORPHIC RESULT & PREDICTION CARDS ───────────────────────────────── */
+.result-card {
+    border-radius: 24px !important;
+    padding: 2.2rem !important;
+    text-align: center !important;
+    margin: 1.5rem 0 !important;
+    box-shadow: 10px 10px 24px #0e1017, -10px -10px 24px #292e40 !important;
+    position: relative !important;
+}
+
+.result-fraud {
+    background: #1f1b24 !important;
+    border: 2px solid rgba(244, 63, 94, 0.45) !important;
+    box-shadow: 10px 10px 24px #0e1017, -10px -10px 24px #292e40, 0 0 30px rgba(244, 63, 94, 0.25) !important;
+}
+
+.result-genuine {
+    background: #182220 !important;
+    border: 2px solid rgba(16, 185, 129, 0.45) !important;
+    box-shadow: 10px 10px 24px #0e1017, -10px -10px 24px #292e40, 0 0 30px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Metric Panels */
+.metric-panel {
+    background: #1e2230 !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-radius: 22px !important;
+    padding: 1.6rem !important;
+    text-align: center !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    box-shadow: 8px 8px 18px #0e1017, -8px -8px 18px #292e40 !important;
+}
+
+/* ─── NEUMORPHIC ALERT CARDS ─────────────────────────────────────────────── */
+.alert-card {
+    background: #1e2230 !important;
+    border-radius: 18px !important;
+    padding: 1.2rem 1.5rem !important;
+    margin-bottom: 0.9rem !important;
+    box-shadow: 6px 6px 14px #0e1017, -6px -6px 14px #292e40 !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-left: 5px solid #6366f1 !important;
+    transition: transform 0.2s ease !important;
+}
+
+.alert-card:hover {
+    transform: translateX(4px) !important;
+}
+
+.alert-card.critical {
+    border-left: 5px solid #f43f5e !important;
+    box-shadow: 6px 6px 14px #0e1017, -6px -6px 14px #292e40, inset 0 0 15px rgba(244, 63, 94, 0.08) !important;
+}
+
+.alert-card.high {
+    border-left: 5px solid #f59e0b !important;
+    box-shadow: 6px 6px 14px #0e1017, -6px -6px 14px #292e40, inset 0 0 15px rgba(245, 158, 11, 0.08) !important;
+}
+
+/* ─── NEUMORPHIC TABS ────────────────────────────────────────────────────── */
+.stTabs [data-baseweb="tab-list"] {
+    background: #141720 !important;
+    padding: 6px !important;
+    border-radius: 16px !important;
+    box-shadow: inset 3px 3px 8px #0e1017, inset -3px -3px 8px #242938 !important;
+    gap: 8px !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 12px !important;
+    padding: 10px 20px !important;
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+    border: none !important;
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    background: #1e2230 !important;
+    color: #ffffff !important;
+    box-shadow: 4px 4px 10px #0e1017, -4px -4px 10px #292e40 !important;
+}
+
+/* ─── NEUMORPHIC TABLES & DATAFRAMES ─────────────────────────────────────── */
+div[data-testid="stDataFrame"],
+div[data-testid="stTable"] {
+    background: #151821 !important;
+    border-radius: 20px !important;
+    padding: 0.6rem !important;
+    box-shadow: inset 4px 4px 10px #0e1017, inset -4px -4px 10px #242938 !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+}
+
+/* ─── NEUMORPHIC METRIC OVERRIDES ────────────────────────────────────────── */
+[data-testid="stMetric"] {
+    background: #1e2230 !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-radius: 18px !important;
+    padding: 1rem 0.6rem !important;
+    box-shadow: 6px 6px 14px #0e1017, -6px -6px 14px #292e40 !important;
+    text-align: center !important;
+}
+
+[data-testid="stMetricValue"] {
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    font-size: 1.25rem !important;
+}
+
+[data-testid="stMetricLabel"] p {
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* ─── NEUMORPHIC SLIDERS ─────────────────────────────────────────────────── */
+div[data-testid="stSlider"] [role="slider"] {
+    background: #6366f1 !important;
+    box-shadow: 0 0 14px rgba(99, 102, 241, 0.7), 2px 2px 6px #0e1017 !important;
+    border: 2px solid #ffffff !important;
+}
+
+/* ─── NEUMORPHIC EXPANDERS ───────────────────────────────────────────────── */
+div[data-testid="stExpander"] {
+    background: #1e2230 !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    box-shadow: 6px 6px 16px #0e1017, -6px -6px 16px #292e40 !important;
+    overflow: hidden !important;
+    margin-bottom: 1.2rem !important;
+}

@@ -47,341 +47,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─── Custom CSS ──────────────────────────────────────────────────────────────
-st.markdown("""
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-    /* Global Dark Theme Enforced */
-    .stApp,
-    [data-testid="stAppViewContainer"],
-    [data-testid="stHeader"],
-    section.main,
-    .block-container {
-        background-color: #0a0e27 !important;
-        color: #f1f5f9 !important;
-        font-family: 'Inter', sans-serif !important;
-    }
-
-    /* All general typography */
-    h1, h2, h3, h4, h5, h6 {
-        color: #ffffff !important;
-        font-family: 'Inter', sans-serif !important;
-    }
-
-    p, span, div {
-        color: #e2e8f0;
-    }
-
-    /* Hide default streamlit branding but keep sidebar toggle button visible */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header[data-testid="stHeader"] {
-        background: transparent !important;
-    }
-
-    /* Sidebar collapse & expand toggle button */
-    [data-testid="stSidebarCollapsedControl"],
-    [data-testid="collapsedControl"] {
-        display: flex !important;
-        visibility: visible !important;
-        color: #ffffff !important;
-        background: #1a1f4e !important;
-        border: 1px solid rgba(102, 126, 234, 0.4) !important;
-        border-radius: 10px !important;
-        margin: 10px !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
-    }
-    [data-testid="stSidebarCollapsedControl"] svg,
-    [data-testid="collapsedControl"] svg {
-        fill: #667eea !important;
-    }
-
-    /* Top Navigation styling */
-    [data-testid="stSegmentedControl"] {
-        background: rgba(16, 20, 56, 0.85) !important;
-        padding: 6px !important;
-        border-radius: 14px !important;
-        border: 1px solid rgba(102, 126, 234, 0.3) !important;
-        margin-bottom: 1.2rem !important;
-        width: 100% !important;
-    }
-
-    [data-testid="stSegmentedControl"] button {
-        color: #cbd5e1 !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-        border-radius: 10px !important;
-    }
-
-    [data-testid="stSegmentedControl"] button[aria-checked="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35) !important;
-    }
-
-    /* Sidebar */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #070a1e 0%, #101438 100%) !important;
-        border-right: 1px solid rgba(102, 126, 234, 0.2) !important;
-    }
-
-    /* High contrast text inside sidebar */
-    [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] div,
-    [data-testid="stSidebar"] label {
-        color: #f1f5f9 !important;
-    }
-
-    /* Sidebar Radio item styling for clear readability */
-    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
-        gap: 8px;
-    }
-
-    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label {
-        background: rgba(102, 126, 234, 0.08) !important;
-        border: 1px solid rgba(102, 126, 234, 0.2) !important;
-        border-radius: 10px !important;
-        padding: 9px 14px !important;
-        margin-bottom: 4px !important;
-        transition: all 0.2s ease !important;
-        width: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-
-    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:hover {
-        background: rgba(102, 126, 234, 0.25) !important;
-        border-color: rgba(102, 126, 234, 0.5) !important;
-    }
-
-    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label p,
-    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label span {
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-    }
-
-    /* Active selection in sidebar */
-    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:has(input:checked) {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.35) 0%, rgba(118, 75, 162, 0.35) 100%) !important;
-        border: 1px solid #667eea !important;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25) !important;
-    }
-
-    /* Inputs, Selectboxes, Sliders high contrast */
-    label[data-testid="stWidgetLabel"] p,
-    label[data-testid="stWidgetLabel"] span {
-        color: #e2e8f0 !important;
-        font-weight: 600 !important;
-        font-size: 0.92rem !important;
-    }
-
-    div[data-baseweb="select"] > div,
-    div[data-baseweb="input"] > div,
-    div[data-baseweb="input"] input {
-        background-color: #12173d !important;
-        color: #ffffff !important;
-        border-color: rgba(102, 126, 234, 0.3) !important;
-    }
-
-    div[data-baseweb="select"] span {
-        color: #ffffff !important;
-    }
-
-    /* Main header */
-    .main-header {
-        background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b69 100%);
-        padding: 1.5rem 2rem;
-        border-radius: 16px;
-        margin-bottom: 1.5rem;
-        border: 1px solid rgba(102, 126, 234, 0.25);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    }
-
-    .main-header h1 {
-        color: #ffffff !important;
-        font-size: 1.8rem;
-        font-weight: 800;
-        margin: 0;
-        background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .main-header p {
-        color: #cbd5e1 !important;
-        font-size: 0.95rem;
-        margin: 0.3rem 0 0 0;
-    }
-
-    /* KPI Cards */
-    .kpi-card {
-        background: linear-gradient(135deg, #1a1f4e 0%, #0d1137 100%);
-        border: 1px solid rgba(102, 126, 234, 0.2);
-        border-radius: 16px;
-        padding: 1.3rem 1.5rem;
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .kpi-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.25);
-    }
-
-    .kpi-value {
-        font-size: 2rem;
-        font-weight: 800;
-        margin: 0.3rem 0;
-    }
-
-    .kpi-label {
-        color: #cbd5e1 !important;
-        font-size: 0.82rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 700;
-    }
-
-    .kpi-icon {
-        font-size: 1.5rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .kpi-blue .kpi-value { color: #818cf8 !important; }
-    .kpi-red .kpi-value { color: #ff5252 !important; }
-    .kpi-green .kpi-value { color: #2ed573 !important; }
-    .kpi-orange .kpi-value { color: #ffa502 !important; }
-    .kpi-purple .kpi-value { color: #c084fc !important; }
-
-    /* Section headers */
-    .section-header {
-        color: #f1f5f9 !important;
-        font-size: 1.15rem;
-        font-weight: 700;
-        margin: 1.5rem 0 0.8rem 0;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid rgba(102, 126, 234, 0.35);
-    }
-
-    /* Alert cards */
-    .alert-card {
-        background: rgba(255, 71, 87, 0.1);
-        border: 1px solid rgba(255, 71, 87, 0.35);
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 0.6rem;
-    }
-
-    .alert-card.critical {
-        border-color: rgba(255, 71, 87, 0.6);
-        background: rgba(255, 71, 87, 0.16);
-    }
-
-    .alert-card.high {
-        border-color: rgba(255, 165, 2, 0.6);
-        background: rgba(255, 165, 2, 0.12);
-    }
-
-    /* Prediction result cards */
-    .result-card {
-        border-radius: 16px;
-        padding: 2rem;
-        text-align: center;
-        margin: 1rem 0;
-    }
-
-    .result-fraud {
-        background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(255, 71, 87, 0.08) 100%);
-        border: 2px solid rgba(255, 71, 87, 0.5);
-    }
-
-    .result-genuine {
-        background: linear-gradient(135deg, rgba(46, 213, 115, 0.2) 0%, rgba(46, 213, 115, 0.08) 100%);
-        border: 2px solid rgba(46, 213, 115, 0.5);
-    }
-
-    /* Metric boxes */
-    .metric-panel {
-        background: linear-gradient(135deg, #1a1f4e 0%, #0d1137 100%);
-        border: 1px solid rgba(102, 126, 234, 0.25);
-        border-radius: 16px;
-        padding: 1.5rem;
-        text-align: center;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-    }
-
-    /* Table styling */
-    .dataframe {
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-    /* Status badges */
-    .badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-
-    .badge-critical { background: #ff4757; color: white; }
-    .badge-high { background: #ffa502; color: white; }
-    .badge-medium { background: #667eea; color: white; }
-    .badge-low { background: #2ed573; color: white; }
-
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-    }
-
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 8px;
-        padding: 8px 16px;
-        color: #cbd5e1 !important;
-    }
-
-    .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        color: #ffffff !important;
-        font-weight: 700;
-    }
-
-    /* Custom Metric Overrides */
-    [data-testid="stMetric"] {
-        background: linear-gradient(135deg, #1a1f4e 0%, #0d1137 100%) !important;
-        border: 1px solid rgba(102, 126, 234, 0.25) !important;
-        border-radius: 12px !important;
-        padding: 0.75rem 0.25rem !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
-        text-align: center !important;
-    }
-
-    [data-testid="stMetricValue"] {
-        font-weight: 800 !important;
-        color: #ffffff !important;
-        font-size: 1.18rem !important;
-        white-space: nowrap !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-    }
-
-    [data-testid="stMetricLabel"] p {
-        color: #cbd5e1 !important;
-        font-weight: 600 !important;
-        font-size: 0.8rem !important;
-    }
-</style>
-""", unsafe_allow_html=True)
-
+# ─── Neumorphism UI Design System ────────────────────────────────────────────
+CSS_PATH = os.path.join(ROOT_DIR, 'assets', 'neumorphism.css')
+if os.path.exists(CSS_PATH):
+    with open(CSS_PATH, 'r', encoding='utf-8') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # ─── Initialize System ───────────────────────────────────────────────────────
 @st.cache_resource
@@ -409,14 +79,14 @@ PLOT_LAYOUT = dict(
 )
 
 COLORS = {
-    'primary': '#667eea',
-    'secondary': '#764ba2',
-    'danger': '#ff4757',
-    'success': '#2ed573',
-    'warning': '#ffa502',
-    'info': '#3498db',
-    'gradient': ['#667eea', '#764ba2', '#a855f7', '#3498db', '#2ed573', '#ffa502',
-                 '#ff4757', '#e84393', '#00b894', '#fdcb6e', '#6c5ce7', '#00cec9']
+    'primary': '#6366f1',
+    'secondary': '#8b5cf6',
+    'danger': '#f43f5e',
+    'success': '#10b981',
+    'warning': '#f59e0b',
+    'info': '#06b6d4',
+    'gradient': ['#6366f1', '#8b5cf6', '#a855f7', '#ec4899', '#06b6d4', '#10b981',
+                 '#f59e0b', '#f43f5e', '#3b82f6', '#14b8a6', '#64748b', '#6366f1']
 }
 
 
@@ -434,17 +104,22 @@ if "current_page" not in st.session_state:
 # ─── Sidebar ─────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style="text-align: center; padding: 1rem 0;">
-        <h2 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    <div style="text-align: center; padding: 1.2rem 0.5rem 0.8rem 0.5rem;">
+        <div style="width: 56px; height: 56px; line-height: 56px; margin: 0 auto 0.8rem auto; border-radius: 50%;
+                    background: #141720; box-shadow: inset 4px 4px 8px #0e1017, inset -4px -4px 8px #252a38;
+                    font-size: 1.7rem; display: flex; align-items: center; justify-content: center;">
+            🛡️
+        </div>
+        <h2 style="background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #818cf8 100%);
                     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-                    font-size: 1.4rem; font-weight: 800; margin: 0;">
-            🛡️ FraudGuard AI
+                    font-size: 1.35rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;">
+            FraudGuard AI
         </h2>
-        <p style="color: #a0aec0; font-size: 0.75rem; margin-top: 0.3rem;">
-            Real-time Fraud Detection System
+        <p style="color: #94a3b8; font-size: 0.78rem; font-weight: 500; margin-top: 0.35rem; letter-spacing: 0.5px;">
+            Real-time Fraud Intelligence
         </p>
     </div>
-    <hr style="border-color: rgba(102, 126, 234, 0.2); margin: 0.5rem 0 1rem 0;">
+    <hr style="border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); margin: 0.5rem 0 1.2rem 0;">
     """, unsafe_allow_html=True)
 
     sidebar_idx = PAGES.index(st.session_state["current_page"]) if st.session_state["current_page"] in PAGES else 0
@@ -999,7 +674,7 @@ elif page == "🔍 Predict Transaction":
                         }
                     ))
                     fig.update_layout(
-                        paper_bgcolor='rgba(26, 31, 78, 0.7)',
+                        paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)',
                         font=dict(family='Inter', color='#ffffff'),
                         margin=dict(l=30, r=30, t=40, b=20),
@@ -1008,9 +683,9 @@ elif page == "🔍 Predict Transaction":
                     st.plotly_chart(fig, use_container_width=True)
 
                 with r2:
-                    risk_colors = {'Low': '#2ed573', 'Medium': '#818cf8',
-                                   'High': '#ffa502', 'Critical': '#ff4757'}
-                    rc = risk_colors.get(result['risk_level'], '#818cf8')
+                    risk_colors = {'Low': '#10b981', 'Medium': '#6366f1',
+                                   'High': '#f59e0b', 'Critical': '#f43f5e'}
+                    rc = risk_colors.get(result['risk_level'], '#6366f1')
                     st.markdown(f"""
                     <div class="metric-panel">
                         <p style="color: #94a3b8; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 0.4rem 0;">Risk Level</p>
