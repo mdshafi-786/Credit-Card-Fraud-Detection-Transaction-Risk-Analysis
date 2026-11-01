@@ -1,3 +1,4 @@
+
 """
 Credit Card Fraud Detection & Transaction Risk Analysis
 ========================================================
@@ -17,7 +18,17 @@ from datetime import datetime
 
 # Add project root to path
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, ROOT_DIR)
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
+import importlib
+import backend.database
+import backend.predict
+try:
+    importlib.reload(backend.database)
+    importlib.reload(backend.predict)
+except Exception:
+    pass
 
 from backend.database import (
     init_db, seed_data, get_dashboard_stats, get_fraud_by_category,
@@ -915,16 +926,26 @@ elif page == "🔍 Predict Transaction":
 
                 # Save prediction
                 txn_id = f"TXN_PRED_{datetime.now().strftime('%Y%m%d%H%M%S%f')}"
-                save_prediction(
-                    txn_id,
-                    result['prediction'],
-                    result['risk_score'],
-                    result['risk_level'],
-                    transaction_amount_inr=transaction_amount,
-                    merchant_category=merchant_category,
-                    transaction_city=transaction_city,
-                    customer_id=f"CUST_{hash(f'{customer_age}_{customer_income}_{customer_tenure}') % 100000:05d}"
-                )
+                cust_id = f"CUST_{hash(f'{customer_age}_{customer_income}_{customer_tenure}') % 100000:05d}"
+                try:
+                    save_prediction(
+                        txn_id,
+                        result['prediction'],
+                        result['risk_score'],
+                        result['risk_level'],
+                        transaction_amount_inr=transaction_amount,
+                        merchant_category=merchant_category,
+                        transaction_city=transaction_city,
+                        customer_id=cust_id
+                    )
+                except TypeError:
+                    # In case of older cached module in memory
+                    save_prediction(
+                        txn_id,
+                        result['prediction'],
+                        result['risk_score'],
+                        result['risk_level']
+                    )
 
                 # Alert if suspicious
                 if result['risk_score'] > 70:

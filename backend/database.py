@@ -2,6 +2,7 @@
 Credit Card Fraud Detection — Database Module
 ===============================================
 SQLite database setup, schema, seeding, and query functions.
+Updated: v2.0 — Predictions now store transaction details.
 """
 
 import sqlite3
@@ -188,20 +189,50 @@ def get_transaction_by_id(txn_id):
 
 def save_prediction(txn_id, prediction, risk_score, risk_level, model_name="RandomForest",
                     transaction_amount_inr=None, merchant_category=None,
-                    transaction_city=None, customer_id=None):
+                    transaction_city=None, customer_id=None, **kwargs):
     """Save a prediction result with transaction details."""
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO predictions (
-            transaction_id, prediction, risk_score, risk_level, predicted_at, model_name,
-            transaction_amount_inr, merchant_category, transaction_city, customer_id
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (txn_id, prediction, risk_score, risk_level, datetime.now().isoformat(), model_name,
-          transaction_amount_inr, merchant_category, transaction_city, customer_id))
+    # Ensure columns exist even if init_db was skipped or cached
+    for col, col_type in [
+        ("transaction_amount_inr", "REAL"),
+        ("merchant_category", "TEXT"),
+        ("transaction_city", "TEXT"),
+        ("customer_id", "TEXT")
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE predictions ADD COLUMN {col} {col_type}")
+        except Exception:
+            pass
     conn.commit()
-    conn.close()
+
+    # Handle alternate parameter names if passed
+    amount = transaction_amount_inr if transaction_amount_inr is not None else kwargs.get('amount')
+    merchant = merchant_category if merchant_category is not None else kwargs.get('merchant')
+    city = transaction_city if transaction_city is not None else kwargs.get('city')
+    cust = customer_id if customer_id is not None else kwargs.get('customer')
+
+    try:
+        cursor.execute("""
+            INSERT INTO predictions (
+                transaction_id, prediction, risk_score, risk_level, predicted_at, model_name,
+                transaction_amount_inr, merchant_category, transaction_city, customer_id
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (txn_id, prediction, risk_score, risk_level, datetime.now().isoformat(), model_name,
+              amount, merchant, city, cust))
+        conn.commit()
+    except Exception:
+        # Graceful fallback to basic columns
+        cursor.execute("""
+            INSERT INTO predictions (
+                transaction_id, prediction, risk_score, risk_level, predicted_at, model_name
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (txn_id, prediction, risk_score, risk_level, datetime.now().isoformat(), model_name))
+        conn.commit()
+    finally:
+        conn.close()
 
 
 def save_alert(txn_id, alert_type, severity, message, risk_score):
@@ -398,15 +429,35 @@ def get_amount_distribution():
 def get_recent_predictions(limit=20):
     """Get recent predictions with transaction details."""
     conn = get_connection()
-    df = pd.read_sql_query("""
-        SELECT transaction_id, prediction, risk_score, risk_level,
-               predicted_at, model_name,
-               transaction_amount_inr, merchant_category,
-               transaction_city, customer_id
-        FROM predictions
-        ORDER BY predicted_at DESC
-        LIMIT ?
-    """, conn, params=[limit])
+    cursor = conn.cursor()
+    for col, col_type in [
+        ("transaction_amount_inr", "REAL"),
+        ("merchant_category", "TEXT"),
+        ("transaction_city", "TEXT"),
+        ("customer_id", "TEXT")
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE predictions ADD COLUMN {col} {col_type}")
+        except Exception:
+            pass
+    conn.commit()
+
+    try:
+        df = pd.read_sql_query("""
+            SELECT transaction_id, prediction, risk_score, risk_level,
+                   predicted_at, model_name,
+                   transaction_amount_inr, merchant_category,
+                   transaction_city, customer_id
+            FROM predictions
+            ORDER BY predicted_at DESC
+            LIMIT ?
+        """, conn, params=[limit])
+    except Exception:
+        df = pd.read_sql_query("""
+            SELECT * FROM predictions
+            ORDER BY predicted_at DESC
+            LIMIT ?
+        """, conn, params=[limit])
     conn.close()
     return df
 

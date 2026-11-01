@@ -51,14 +51,20 @@ def predict():
         txn_id = data.get('transaction_id', f"TXN_PRED_{datetime.now().strftime('%Y%m%d%H%M%S')}")
 
         # Save prediction to database
-        save_prediction(
-            txn_id, result['prediction'],
-            result['risk_score'], result['risk_level'],
-            transaction_amount_inr=data.get('transaction_amount_inr'),
-            merchant_category=data.get('merchant_category'),
-            transaction_city=data.get('transaction_city'),
-            customer_id=data.get('customer_id')
-        )
+        try:
+            save_prediction(
+                txn_id, result['prediction'],
+                result['risk_score'], result['risk_level'],
+                transaction_amount_inr=data.get('transaction_amount_inr'),
+                merchant_category=data.get('merchant_category'),
+                transaction_city=data.get('transaction_city'),
+                customer_id=data.get('customer_id')
+            )
+        except TypeError:
+            save_prediction(
+                txn_id, result['prediction'],
+                result['risk_score'], result['risk_level']
+            )
 
         # Create alert if suspicious (risk_score > 70)
         if result['risk_score'] > 70:
